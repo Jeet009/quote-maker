@@ -26,6 +26,7 @@ code {
 }
 .username:focus {
   padding: 10px;
+  border-width: 0px;
 }
 .authorImage {
   width: 100%;
@@ -57,10 +58,11 @@ code {
   flex-direction: column;
 }
 .image-container {
-  width: 50px;
-  height: 50px;
+  width: 65px;
+  height: 65px;
   overflow: hidden;
   border-radius: 50%;
+  border: solid 0.1px rgb(29, 29, 29);
 }
 .quote {
   padding-top: 10px;

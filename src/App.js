@@ -6,6 +6,7 @@ function App() {
     "Write Something, To understand yourself!"
   );
   const [showBio, setShowBio] = useState(false);
+  const [typing, setTyping] = useState(true); //Word Count
   const [image, setImage] = useState({ preview: "", raw: "" });
 
   const types = ["image/png", "image/jpg", "image/jpeg"];
@@ -17,7 +18,19 @@ function App() {
       });
       setQuote("Look at you! You are looking cute.");
     } else {
-      setQuote("Enter a proper image! Or you do not have that?");
+      setQuote("Enter a proper image! Or you do not have one? Ummm!");
+    }
+  };
+
+  const handleQuoteInput = (e) => {
+    if (e.currentTarget.textContent.length > 120) {
+      setTyping(false);
+      setQuote("Come on! You have typed 120 words. What is wrong with you?");
+      setUsername("Refresh The Page");
+      setImage({
+        preview:
+          "https://images-na.ssl-images-amazon.com/images/I/41d-kZxsuIL._SY741_.jpg",
+      });
     }
   };
 
@@ -43,7 +56,7 @@ function App() {
             <div className='author-name'>
               <h6
                 className='username'
-                contentEditable='true'
+                contentEditable={typing ? "true" : "false"}
                 onBlur={(e) => {
                   setUsername(e.currentTarget.textContent);
                   setShowBio(false);
@@ -60,8 +73,9 @@ function App() {
           <div className='quote container'>
             <p
               className='text-para'
-              contentEditable='true'
+              contentEditable={typing ? "true" : "false"}
               onBlur={(e) => setQuote(e.currentTarget.textContent)}
+              onInput={handleQuoteInput}
             >
               {quote}
             </p>
@@ -69,27 +83,29 @@ function App() {
           <hr width='40%' />
         </div>
         {/* End Template  */}
-        <div className='buttons'>
-          <label
-            htmlFor='upload-button'
-            // style={{ margin: "0" }}
-            className='btn btn-custom btn-edit'
-          >
-            <span className='fa fa-user-circle'></span>
-            <input
-              type='file'
-              id='upload-button'
-              style={{ visibility: "hidden", position: "absolute" }}
-              onChange={handleImage}
-            />
-          </label>
-          <label
-            className='btn btn-custom btn-camera'
-            style={{ backgroundColor: " yellow" }}
-          >
-            <span className='fa fa-arrow-right'></span>
-          </label>
-        </div>
+        {typing && (
+          <div className='buttons'>
+            <label
+              htmlFor='upload-button'
+              // style={{ margin: "0" }}
+              className='btn btn-custom btn-edit'
+            >
+              <span className='fa fa-camera'></span>
+              <input
+                type='file'
+                id='upload-button'
+                style={{ visibility: "hidden", position: "absolute" }}
+                onChange={handleImage}
+              />
+            </label>
+            <label
+              className='btn btn-custom btn-camera'
+              style={{ backgroundColor: " yellow" }}
+            >
+              <span className='fa fa-arrow-right'></span>
+            </label>
+          </div>
+        )}
       </div>
     </div>
   );
