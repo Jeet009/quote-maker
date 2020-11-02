@@ -96,3 +96,10 @@ code {
     font-weight: 400;
   }
 }
+
+@media screen and (max-width: 580px) {
+  body {
+    overflow-y: hidden;
+    position: fixed;
+  }
+}
