@@ -43,6 +43,7 @@ code {
 .buttons {
   margin-top: 20px;
 }
+
 .con-c {
   width: 100%;
   height: 100vh;
@@ -97,11 +98,19 @@ code {
   }
 }
 
-@media screen and (max-width: 580px) {
+@media screen and (max-width: 575px) {
   body {
     overflow-y: hidden;
     overflow-x: hidden;
     position: fixed;
-    height: 100%;
+    top: 0%;
+    left: 0%;
+    right: 0%;
   }
 }
+
+/* @media screen and (max-width: 580px) and (min-width: 475px) {
+  .container {
+    height: 100%;
+  }
+} */
