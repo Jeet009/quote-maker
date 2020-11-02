@@ -8,8 +8,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: rgb(29, 29, 29);
   height: 100%;
-  overflow-y: hidden;
-  position: fixed;
 }
 
 code {
@@ -102,6 +100,8 @@ code {
 @media screen and (max-width: 580px) {
   body {
     overflow-y: hidden;
+    overflow-x: hidden;
     position: fixed;
+    height: 100%;
   }
 }
