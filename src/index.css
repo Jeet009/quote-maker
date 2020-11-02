@@ -107,6 +107,19 @@ code {
     left: 0%;
     right: 0%;
   }
+  .quote {
+    padding: 30px;
+  }
+  .con-c {
+    padding: 0 !important;
+  }
+  .container {
+    margin: 0 !important;
+  }
+  .text-para {
+    font-size: 20px;
+    padding-left: 5px !important;
+  }
 }
 
 /* @media screen and (max-width: 580px) and (min-width: 475px) {
