@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import domtoimage from "dom-to-image";
+import { Modal } from "react-bootstrap";
 
 function App() {
   const [username, setUsername] = useState("Jeet Mukherjee");
@@ -8,6 +10,18 @@ function App() {
   const [showBio, setShowBio] = useState(false);
   const [typing, setTyping] = useState(true); //Word Count
   const [image, setImage] = useState({ preview: "", raw: "" });
+  const [isPreviewing, setIsPreviewing] = useState(false);
+
+  // Handling Modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+    setIsPreviewing(false);
+  };
+  //End Handling Modal
+
+  const template = useRef();
+  const preview = useRef();
 
   const types = ["image/png", "image/jpg", "image/jpeg"];
   const handleImage = (e) => {
@@ -34,12 +48,79 @@ function App() {
     }
   };
 
+  const handleSnapshot = (e) => {
+    setShow(true);
+    const { current } = template;
+
+    domtoimage
+      .toJpeg(current, { quality: 1 })
+      .then(function (dataUrl) {
+        let img = new Image();
+        img.src = dataUrl;
+        img.style.width = "300px";
+        preview.current.appendChild(img);
+      })
+      .then(() => setIsPreviewing(true))
+      .catch(function (error) {
+        console.error("oops, something went wrong!", error);
+      });
+  };
+
+  const handleDownload = (e) => {
+    const { current } = template;
+    var scale = 2;
+    domtoimage
+      .toJpeg(current, {
+        width: current.clientWidth * scale,
+        height: current.clientHeight * scale,
+        style: {
+          transform: "scale(" + scale + ")",
+          transformOrigin: "top left",
+        },
+      })
+      .then(function (dataUrl) {
+        var link = document.createElement("a");
+        link.download = "qtmaker.jpeg";
+        link.href = dataUrl;
+        link.click();
+      });
+  };
+
   return (
     <div className='container'>
+      {/* Preview  */}
+      <Modal
+        show={show}
+        onHide={handleClose}
+        size='lg'
+        aria-labelledby='contained-modal-title-vcenter'
+        centered
+      >
+        <Modal.Header closeButton className='modal-header'>
+          <Modal.Title>
+            {!isPreviewing ? "Initializing Preview" : "Preview"}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='modal-body'>
+          <div className='overlay'>
+            <div className='prevImage' ref={preview}></div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer modal-footer>
+          <button
+            className='btn btn-custom btn-camera'
+            style={{ backgroundColor: " yellow" }}
+            onClick={handleDownload}
+          >
+            <span className='fa fa-download'></span>
+          </button>
+        </Modal.Footer>
+      </Modal>
+      {/* Preview End  */}
       <div className='con-c'>
         <h5 className='site-title'>The Quote Maker</h5>
         {/* Template  */}
-        <div className='template'>
+        <div className='template' ref={template}>
           <div className='author'>
             <div className='image-container'>
               <img
@@ -65,9 +146,9 @@ function App() {
                 spellCheck='false'
               >
                 {username} <br />
-                {!showBio && <span>@quote.themukherjee.in</span>}
+                {!showBio && <span>@qtmaker.themukherjee.in</span>}
               </h6>
-              {showBio && <span>@quote.themukherjee.in</span>}
+              {showBio && <span>@qtmaker.themukherjee.in</span>}
             </div>
           </div>
           <div className='quote container'>
@@ -83,6 +164,7 @@ function App() {
           <hr width='40%' />
         </div>
         {/* End Template  */}
+        {/* Buttons  */}
         {typing && (
           <div className='buttons'>
             <label
@@ -101,11 +183,13 @@ function App() {
             <label
               className='btn btn-custom btn-camera'
               style={{ backgroundColor: " yellow" }}
+              onClick={handleSnapshot}
             >
               <span className='fa fa-arrow-right'></span>
             </label>
           </div>
         )}
+        {/* End Buttons  */}
       </div>
     </div>
   );
