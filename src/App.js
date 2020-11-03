@@ -53,7 +53,7 @@ function App() {
     const { current } = template;
 
     domtoimage
-      .toJpeg(current, { quality: 1 })
+      .toJpeg(current)
       .then(function (dataUrl) {
         let img = new Image();
         img.src = dataUrl;
@@ -68,22 +68,12 @@ function App() {
 
   const handleDownload = (e) => {
     const { current } = template;
-    var scale = 2;
-    domtoimage
-      .toJpeg(current, {
-        width: current.clientWidth * scale,
-        height: current.clientHeight * scale,
-        style: {
-          transform: "scale(" + scale + ")",
-          transformOrigin: "top left",
-        },
-      })
-      .then(function (dataUrl) {
-        var link = document.createElement("a");
-        link.download = "qtmaker.jpeg";
-        link.href = dataUrl;
-        link.click();
-      });
+    domtoimage.toJpeg(current).then(function (dataUrl) {
+      var link = document.createElement("a");
+      link.download = "qtmaker.jpeg";
+      link.href = dataUrl;
+      link.click();
+    });
   };
 
   return (
